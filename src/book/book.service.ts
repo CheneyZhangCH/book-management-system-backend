@@ -11,9 +11,11 @@ export class BookService {
   private readonly dbService: DbService;
 
   async create(createBookDto: CreateBookDto) {
-    const books : Book[] = await this.dbService.read();
+    const books: Book[] = await this.dbService.read<Book>();
     const foundBook = books.find(
-      (item) => item.name === createBookDto.name && item.author === createBookDto.author,
+      (item) =>
+        item.name === createBookDto.name &&
+        item.author === createBookDto.author,
     );
     if (foundBook) {
       throw new BadRequestException('该书籍已经存在');
@@ -31,7 +33,7 @@ export class BookService {
   }
 
   async list() {
-    const books: Book[] = await this.dbService.read();
+    const books: Book[] = await this.dbService.read<Book>();
     if (!Array.isArray(books) || books.length === 0) {
       return [];
     }
@@ -39,7 +41,7 @@ export class BookService {
   }
 
   async findById(id: string) {
-    const books: Book[] = await this.dbService.read();
+    const books: Book[] = await this.dbService.read<Book>();
     const foundBook = books.find((item) => item.id === id);
     if (!foundBook) {
       throw new BadRequestException('该书籍不存在');
@@ -48,7 +50,7 @@ export class BookService {
   }
 
   async update(updateBookDto: UpdateBookDto) {
-    const books: Book[] = await this.dbService.read();
+    const books: Book[] = await this.dbService.read<Book>();
     const foundBook = books.find((item) => item.id === updateBookDto.id);
     if (!foundBook) {
       throw new BadRequestException('该书籍不存在');
@@ -64,8 +66,8 @@ export class BookService {
   }
 
   async delete(id: string) {
-    const books: Book[] = await this.dbService.read();
-    const index = books.findIndex(book => book.id === id);
+    const books: Book[] = await this.dbService.read<Book>();
+    const index = books.findIndex((book) => book.id === id);
 
     if (index !== -1) {
       books.splice(index, 1);

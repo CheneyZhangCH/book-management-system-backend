@@ -7,7 +7,7 @@ export class DbService {
   @Inject('DB_OPTIONS')
   private readonly options: { path: string };
 
-  async read() {
+  async read<T>(): Promise<T[]> {
     // Implementation for writing data to the database
     const path = this.options.path;
     try {
@@ -25,7 +25,7 @@ export class DbService {
       return [];
     }
 
-    return JSON.parse(str);
+    return JSON.parse(str) as T[];
 
     console.log(`Writing to database at path: ${path}`);
   }

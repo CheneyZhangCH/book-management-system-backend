@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common/exceptions';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { DbService } from 'src/db/db.service';
 import { LoginUserDto } from './dto/login-user.dto copy';
@@ -13,7 +12,7 @@ export class UserService {
   private readonly dbService: DbService;
 
   async create(createUserDto: CreateUserDto) {
-    const users: User[] = await this.dbService.read();
+    const users: User[] = await this.dbService.read<User>();
     const foundUser = users.find(
       (item) => item.username === createUserDto.username,
     );
@@ -31,7 +30,7 @@ export class UserService {
   }
 
   async login(loginUserDto: LoginUserDto) {
-    const users: User[] = await this.dbService.read();
+    const users: User[] = await this.dbService.read<User>();
     const foundUser = users.find(
       (item) => item.username === loginUserDto.username,
     );
